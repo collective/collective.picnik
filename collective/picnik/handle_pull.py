@@ -16,11 +16,13 @@ class HandlePull(BrowserView):
             # Download failed ... this shouldn't happen very often,
             # but you might want to put some retry logic in your app
             logger.error("Sorry, the image download failed.")
-            return
+            return "image fail to update"
         # Save the image
         self.update_image_field(image_data)
+        return "image updated"
 
     def get_image_url(self):
+        """Extract image url from the request and make some checks"""
         #Make sure we've been sent an image url
         image_url = self.request.form.get('file', None)
         if not image_url:
@@ -34,19 +36,31 @@ class HandlePull(BrowserView):
         return image_url
 
     def fetch_image(self):
+        """download image and return dict object:
+        {'filename': ... , 'data':..., 'mimetype':...}
+        """
+        res = {}
+        res['filename'] = "picnik_exported_image" + datetime.now().isoformat()+ ".jpg"
         url = self.get_image_url()
-        return urllib.urlopen(url)
+        res['data'] = urllib.urlopen(url)
+        res['mimetype'] = 'image/jpeg'
+        
+        return res
 
-    def update_image_field(self, data):
-        filename = "picnik_exported_image" + datetime.now().isoformat()+ ".jpg"
-        mimetype = 'image/jpeg'
+    def field(self):
+        """Return the field supposed to be updated"""
+        return self.context.getField('image') or self.context.getPrimaryField()
+
+    def update_context(self):
+        """Do the job to fetch image and update the context with it"""
+        image_info = self.fetch_image()
         sio = StringIO()
-        sio.write(image_data)
-        field = self.context.getField('image') or self.context.getPrimaryField()
+        sio.write(image_info['data'])
+        field = self.field()
         field.set(
             self.context,
-            image_data,
-            mimetype=mimetype,
-            filename=filename, 
+            image_info['data'],
+            mimetype=image_info['mimetype'],
+            filename=image_info['filename'], 
             refresh_exif=False
         )
