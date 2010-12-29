@@ -18,7 +18,7 @@ class HandlePull(BrowserView):
             logger.error("Sorry, the image download failed.")
             return "image fail to update"
         # Save the image
-        self.update_image_field(image_data)
+        self.update_context()
         return "image updated"
 
     def get_image_url(self):
@@ -27,24 +27,29 @@ class HandlePull(BrowserView):
         image_url = self.request.form.get('file', None)
         if not image_url:
             logger.error("No image url has been provide")
-            return
+            return ''
         # Make sure that the image came from picnik.  We don't want anyone
         # sending us data we didn't ask for!
         if not image_url.startswith("http://www.picnik.com"):
             logger.error("Sorry, the image URL doesn't seem right.")
-            return
+            return ''
         return image_url
 
     def fetch_image(self):
         """download image and return dict object:
         {'filename': ... , 'data':..., 'mimetype':...}
         """
+        url = self.get_image_url()
+        if not url:
+            return
+        image = urllib.urlopen(url)
+        if image.getcode() != 200:
+            return
         res = {}
         res['filename'] = "picnik_exported_image" + datetime.now().isoformat()+ ".jpg"
-        url = self.get_image_url()
-        res['data'] = urllib.urlopen(url)
-        res['mimetype'] = 'image/jpeg'
-        
+        res['data'] = image.read()
+        res['mimetype'] = image.info().gettype()
+
         return res
 
     def field(self):
@@ -54,6 +59,8 @@ class HandlePull(BrowserView):
     def update_context(self):
         """Do the job to fetch image and update the context with it"""
         image_info = self.fetch_image()
+        if not image_info:
+            return "image download fails"
         sio = StringIO()
         sio.write(image_info['data'])
         field = self.field()
