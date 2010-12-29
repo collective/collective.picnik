@@ -8,6 +8,7 @@ class FakeRequest(object):
     def __init__(self):
         self.response = FakeResponse
         self.form = {}
+        self.URL = 'http://localhost:8080/Plone'
 
 class FakeField:
     def __init__(self):
@@ -24,3 +25,6 @@ class FakeContext(object):
     def getField(self, name):
         if name == 'image':
             return self.image
+
+    def absolute_url(self):
+        return 'http://localhost:8080/Plone/myimage'

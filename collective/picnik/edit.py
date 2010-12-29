@@ -12,6 +12,7 @@ class Edit(BrowserView):
             return self.http_get_edit()
         elif islocalhost:
             logger.info('doesn t support localhost editing at the moment')
+            return 'localhost is not supported'
 
     def http_get_edit(self):
         """Use the http get picnik method.
