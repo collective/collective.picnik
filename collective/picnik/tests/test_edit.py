@@ -1,6 +1,7 @@
 import unittest
+from urlparse import urlparse
+from urllib import unquote
 from collective.picnik import edit
-from collective.picnik import config
 from collective.picnik.tests import base
 from collective.picnik.tests import utils
 
@@ -27,8 +28,13 @@ class UnitTest(unittest.TestCase):
         self.view.api_key = api_key
         self.view.http_get_edit()
         url = self.request.response._redirect
-        self.failUnless(url.startswith(config.SERVICE_URL))
-        import pdb;pdb.set_trace()
+        self.failUnless(url.startswith('http://www.picnik.com/service/?'))
+        parsed = urlparse(url)
+        query = unquote(parsed.query)
+        self.failUnless('_apikey=my_api_key' in query, query)
+        self.failUnless('_import=http://localhost:8080/Plone/myimage' in query)
+        self.failUnless('_export=http://localhost:8080/Plone/myimage/@@picnik_handle_pull' in query)
+        self.failUnless('_export_agent=browser' in query)
 
 class IntegrationTest(base.IntegrationTestCase):
     def test_call(self):

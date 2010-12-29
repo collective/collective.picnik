@@ -6,9 +6,10 @@ class FakeResponse(object):
 
 class FakeRequest(object):
     def __init__(self):
-        self.response = FakeResponse
+        self.response = FakeResponse()
         self.form = {}
         self.URL = 'http://localhost:8080/Plone'
+        self.method = 'GET'
 
 class FakeField:
     def __init__(self):
