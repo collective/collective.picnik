@@ -19,7 +19,7 @@ class HandlePull(BrowserView):
             return "image fail to update"
         # Save the image
         self.update_context()
-        self.request.response.redirect(self.context.absolute_url())
+        self.request.response.redirect(self.context.absolute_url()+'/view')
 
     def get_image_url(self):
         """Extract image url from the request and make some checks"""
@@ -72,3 +72,4 @@ class HandlePull(BrowserView):
             filename=image_info['filename'], 
             refresh_exif=False
         )
+        #TODO add a notify on modified event
