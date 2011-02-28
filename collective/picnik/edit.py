@@ -24,9 +24,10 @@ class Edit(BrowserView):
         context_url = self.context.absolute_url()
         kwargs['_apikey'] = self.api_key()
         kwargs['_import'] = context_url
-        kwargs['_export'] = context_url + '/@@picnik_handle_pull'
+        kwargs['_export'] = context_url + '/@@picnik_pull_handler'
         kwargs['_export_agent'] = 'browser'
         url = config.SERVICE_URL + '?' + urllib.urlencode(kwargs)
+        logger.info(kwargs)
         self.request.response.redirect(url)
         return ''
 

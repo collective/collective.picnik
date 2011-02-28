@@ -30,8 +30,9 @@ class HandlePull(BrowserView):
             return ''
         # Make sure that the image came from picnik.  We don't want anyone
         # sending us data we didn't ask for!
-        if not image_url.startswith("http://www.picnik.com"):
-            logger.error("Sorry, the image URL doesn't seem right.")
+        image_url = urllib.unquote(image_url)
+        if not image_url.startswith("http://www.picnik.com") or not image_url.startswith("http://www.picnikr.com"):
+            logger.error("Sorry, the image URL doesn't seem right: %s"%image_url)
             return ''
         return image_url
 
