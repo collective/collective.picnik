@@ -1,29 +1,51 @@
-import unittest
+import unittest2 as unittest
+from zope import interface
+from plone.app import testing
+from collective.picnik.tests import layer
+from collective.picnik.tests import utils
 
-#from zope.testing import doctestunit
-#from zope.component import testing
-from Testing import ZopeTestCase as ztc
+class UnitTestCase(unittest.TestCase):
+    
+    def setUp(self):
+        from ZPublisher.tests.testPublish import Request
+        from zope.annotation.interfaces import IAttributeAnnotatable
+        self.context = utils.FakeContext()
+        self.request = utils.FakeRequest()
+        super(UnitTestCase, self).setUp()
 
-from Products.Five import fiveconfigure
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import PloneSite
-ptc.setupPloneSite()
+class IntegrationTestCase(unittest.TestCase):
 
-import collective.picnik
+    layer = layer.INTEGRATION
 
+    def setUp(self):
+        from zope.annotation.interfaces import IAttributeAnnotatable
+        from collective.picnik.interfaces import IPicnikLayer
+        interface.alsoProvides(self.layer['request'],
+                               (IAttributeAnnotatable,IPicnikLayer))
+        super(IntegrationTestCase, self).setUp()
+        self.portal = self.layer['portal']
+        testing.setRoles(self.portal, testing.TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', 'test-folder')
+        testing.setRoles(self.portal, testing.TEST_USER_ID, ['Member'])
+        self.folder = self.portal['test-folder']
 
-class IntegrationTestCase(ptc.PloneTestCase):
+class FunctionalTestCase(unittest.TestCase):
 
-    class layer(PloneSite):
+    layer = layer.FUNCTIONAL
 
-        @classmethod
-        def setUp(cls):
-            fiveconfigure.debug_mode = True
-            ztc.installPackage(collective.picnik)
-            fiveconfigure.debug_mode = False
+    def setUp(self):
+        from zope.annotation.interfaces import IAttributeAnnotatable
+        from collective.gallery.interfaces import IPicnikLayer
+        interface.alsoProvides(self.layer['request'],
+                               (IAttributeAnnotatable,IPicnikLayer))
+        self.portal = self.layer['portal']
+        testing.setRoles(self.portal, testing.TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', 'test-folder')
+        testing.setRoles(self.portal, testing.TEST_USER_ID, ['Member'])
+        self.folder = self.portal['test-folder']
 
-        @classmethod
-        def tearDown(cls):
-            pass
-
-
+def build_test_suite(test_classes):
+    suite = unittest.TestSuite()
+    for klass in test_classes:
+        suite.addTest(unittest.makeSuite(klass))
+    return suite

@@ -1,0 +1,4 @@
+<layers>
+    <layer name="collective.picnik"
+           interface="collective.picnik.interfaces.IPicnikLayer" />
+</layers>

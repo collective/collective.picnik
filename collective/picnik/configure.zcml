@@ -15,6 +15,7 @@
       description="Installs the collective.picnik package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
   <!-- -*- extra stuff goes here -*- -->
 
   <browser:page
@@ -22,12 +23,14 @@
       name="picnik_pull_handler"
       class=".handle_pull.HandlePull"
       permission="cmf.ModifyPortalContent"
+      layer=".interfaces.IPicnikLayer"
   />
   <browser:page
       for="collective.picnik.interfaces.IImage"
       name="picnik_edit"
       class=".edit.Edit"
       permission="zope2.View"
+      layer=".interfaces.IPicnikLayer"
   />
 
 </configure>

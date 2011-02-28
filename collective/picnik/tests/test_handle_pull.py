@@ -1,14 +1,12 @@
-import unittest
 from collective.picnik import handle_pull
 from collective.picnik.tests import base
 from collective.picnik.tests import utils
 
 URL = 'http://www.picnik.com/show/id/9549783515_wxnf9/imgVjCU/thumb320'
 
-class UnitTest(unittest.TestCase):
+class UnitTest(base.UnitTestCase):
     def setUp(self):
-        self.request = utils.FakeRequest()
-        self.context = utils.FakeContext()
+        super(UnitTest,self).setUp()
         self.view = handle_pull.HandlePull(self.context, self.request)
 
     def test_call(self):
@@ -70,8 +68,3 @@ class IntegrationTest(base.IntegrationTestCase):
     def test_update_context(self):
         pass
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UnitTest))
-    suite.addTest(unittest.makeSuite(IntegrationTest))
-    return suite

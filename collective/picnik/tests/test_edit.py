@@ -1,14 +1,12 @@
-import unittest
 from urlparse import urlparse
 from urllib import unquote
 from collective.picnik import edit
 from collective.picnik.tests import base
 from collective.picnik.tests import utils
 
-class UnitTest(unittest.TestCase):
+class UnitTest(base.UnitTestCase):
     def setUp(self):
-        self.context = utils.FakeContext()
-        self.request = utils.FakeRequest()
+        super(UnitTest,self).setUp()
         self.view = edit.Edit(self.context, self.request)
 
     def test_call(self):
@@ -33,7 +31,7 @@ class UnitTest(unittest.TestCase):
         query = unquote(parsed.query)
         self.failUnless('_apikey=my_api_key' in query, query)
         self.failUnless('_import=http://localhost:8080/Plone/myimage' in query)
-        self.failUnless('_export=http://localhost:8080/Plone/myimage/@@picnik_handle_pull' in query)
+        self.failUnless('_export=http://localhost:8080/Plone/myimage/@@picnik_pull_handler' in query)
         self.failUnless('_export_agent=browser' in query)
 
 class IntegrationTest(base.IntegrationTestCase):
@@ -46,8 +44,3 @@ class IntegrationTest(base.IntegrationTestCase):
     def test_api_key(self):
         pass
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UnitTest))
-    suite.addTest(unittest.makeSuite(IntegrationTest))
-    return suite
