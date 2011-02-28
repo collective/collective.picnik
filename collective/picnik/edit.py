@@ -32,7 +32,7 @@ class Edit(BrowserView):
 
     def api_key(self):
         pp = getToolByName(self.context, 'portal_properties')
-        api_key = pp.picnik_properties.api_key
+        api_key = pp.picnik_properties.apikey
         if not api_key:
             logger.error('You must provide an api key first')
         return api_key
