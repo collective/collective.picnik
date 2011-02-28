@@ -19,7 +19,7 @@ class HandlePull(BrowserView):
             return "image fail to update"
         # Save the image
         self.update_context()
-        return "image updated"
+        self.request.response.redirect(self.context.absolute_url())
 
     def get_image_url(self):
         """Extract image url from the request and make some checks"""
@@ -31,7 +31,7 @@ class HandlePull(BrowserView):
         # Make sure that the image came from picnik.  We don't want anyone
         # sending us data we didn't ask for!
         image_url = urllib.unquote(image_url)
-        if not image_url.startswith("http://www.picnik.com") or not image_url.startswith("http://www.picnikr.com"):
+        if not image_url.startswith("http://www.picnik.com") and not image_url.startswith("http://www.picnikr.com"):
             logger.error("Sorry, the image URL doesn't seem right: %s"%image_url)
             return ''
         return image_url
