@@ -1,4 +1,5 @@
 from Products.Five import BrowserView
+from Products.CMFCore.utils import getToolByName
 from collective.picnik import config
 from collective.picnik import logger
 import urllib
