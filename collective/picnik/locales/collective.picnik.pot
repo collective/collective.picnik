@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-07 23:16+0000\n"
+"POT-Creation-Date: 2011-10-07 23:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,19 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.picnik\n"
 
+#: ./interfaces.py:23
+msgid "API KEY"
+msgstr ""
+
 #: ./profiles/default/actions.xml
 msgid "Modify in picnik"
+msgstr ""
+
+#: ./controlpanel.py:13
+msgid "Picnik settings"
+msgstr ""
+
+#: ./interfaces.py:24
+msgid "You can create ask for an API KEY at                         https://www.picnik.com/keys/"
 msgstr ""
 

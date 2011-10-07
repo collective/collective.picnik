@@ -1,7 +1,7 @@
-from collective.picnik import logger
 from zope import interface
 from zope import schema
-#dependencies
+
+from collective.picnik import logger, messageFactory as _
 try:
     from Products.ATContentTypes.interfaces import IATImage as IImage
 except ImportError, e:
@@ -14,9 +14,13 @@ except ImportError, e:
         #plone3
         from Products.ATContentTypes.interface import IATImage  as IImage
 
+
 class IPicnikLayer(interface.Interface):
     """Browser layer for picnik addon"""
 
 class PicnikConfiguration(interface.Interface):
 
-    apikey = schema.ASCIILine(title=u"API KEY", default="")
+    apikey = schema.ASCIILine(title=_(u"API KEY"),
+                      description=_(u"You can create ask for an API KEY at \
+                        https://www.picnik.com/keys/"),
+                      default="")
