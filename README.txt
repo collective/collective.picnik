@@ -17,6 +17,12 @@ Some useful links about picnik:
 * http://www.picnik.com/info/api
 * http://www.picnik.com/keys/request
 
+How to install
+==============
+
+You can install it as any Plone addon, following this documentation:
+http://plone.org/documentation/kb/installing-add-ons-quick-how-to
+
 How it works
 ============
 
@@ -42,8 +48,6 @@ Companies
 Authors
 
   - JeanMichel FRANCOIS aka toutpt <toutpt@gmail.com>
-
-Contributors
 
 
 .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif

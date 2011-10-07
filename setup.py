@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0dev'
+version = '1.0'
 
 setup(name='collective.picnik',
       version=version,
@@ -17,7 +17,7 @@ setup(name='collective.picnik',
       keywords='',
       author='JeanMichel FRANCOIS aka toutpt',
       author_email='toutpt@gmail.com',
-      url='http://github.com/collective/collective.picnik',
+      url='http://toutpt.makina-corpus.org/en/add-ons/collective.picnik',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['collective'],
@@ -25,6 +25,7 @@ setup(name='collective.picnik',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.registry',
           # -*- Extra requirements: -*-
       ],
       extras_require = {'test': ['plone.app.testing']},

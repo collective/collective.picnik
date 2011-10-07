@@ -1,6 +1,6 @@
 from collective.picnik import logger
 from zope import interface
-
+from zope import schema
 #dependencies
 try:
     from Products.ATContentTypes.interfaces import IATImage as IImage
@@ -16,3 +16,7 @@ except ImportError, e:
 
 class IPicnikLayer(interface.Interface):
     """Browser layer for picnik addon"""
+
+class PicnikConfiguration(interface.Interface):
+
+    apikey = schema.ASCIILine(title=u"API KEY", default="")

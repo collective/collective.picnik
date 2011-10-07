@@ -1,0 +1,3 @@
+<registry>
+  <records interface="collective.picnik.interfaces.PicnikConfiguration" />
+</registry>

@@ -3,6 +3,8 @@ from Products.CMFCore.utils import getToolByName
 from collective.picnik import config
 from collective.picnik import logger
 import urllib
+from plone.registry.interfaces import IRegistry
+from collective.picnik import interfaces
 
 class Edit(BrowserView):
     """Redirect to picnik editor"""
@@ -22,7 +24,7 @@ class Edit(BrowserView):
         """
         kwargs = {}
         context_url = self.context.absolute_url()
-        kwargs['_apikey'] = self.api_key()
+        kwargs['_apikey'] = self.apikey()
         kwargs['_import'] = context_url
         kwargs['_export'] = context_url + '/@@picnik_pull_handler'
         kwargs['_export_agent'] = 'browser'
@@ -31,9 +33,14 @@ class Edit(BrowserView):
         self.request.response.redirect(url)
         return ''
 
-    def api_key(self):
-        pp = getToolByName(self.context, 'portal_properties')
-        api_key = pp.picnik_properties.apikey
-        if not api_key:
+    def apikey(self):
+        apikey = self.configuration.apikey
+        if not apikey:
             logger.error('You must provide an api key first')
-        return api_key
+        return apikey
+
+    def configuration(self):
+        registry = component.queryUtility(IRegistry)
+        configuration = registry.forInterface(PicnikConfiguration)
+        return configuration
+
