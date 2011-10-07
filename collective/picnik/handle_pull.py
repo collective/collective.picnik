@@ -1,8 +1,11 @@
+from zope.event import notify
+from Products.Archetypes.event import ObjectEditedEvent
 from Products.Five import BrowserView
 from collective.picnik import logger
 import urllib
 from datetime import datetime
 from StringIO import StringIO
+
 
 class HandlePull(BrowserView):
     """This is a controller to download image data from Picnik after we're given
@@ -72,4 +75,5 @@ class HandlePull(BrowserView):
             filename=image_info['filename'], 
             refresh_exif=False
         )
-        #TODO add a notify on modified event
+
+        notify(ObjectEditedEvent(self.context))
