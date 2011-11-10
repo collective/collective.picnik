@@ -1,9 +1,10 @@
+import urllib
+from zope import component
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
+from plone.registry.interfaces import IRegistry
 from collective.picnik import config
 from collective.picnik import logger
-import urllib
-from plone.registry.interfaces import IRegistry
 from collective.picnik import interfaces
 
 class Edit(BrowserView):
@@ -39,8 +40,9 @@ class Edit(BrowserView):
             logger.error('You must provide an api key first')
         return apikey
 
+    @property
     def configuration(self):
         registry = component.queryUtility(IRegistry)
-        configuration = registry.forInterface(PicnikConfiguration)
+        configuration = registry.forInterface(interfaces.PicnikConfiguration)
         return configuration
 
